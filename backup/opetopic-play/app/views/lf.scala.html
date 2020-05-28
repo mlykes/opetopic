@@ -1,0 +1,22 @@
+@import org.webjars.play.WebJarsUtil
+@import play.api.Play
+
+@(isDev: Boolean)(implicit request: RequestHeader, userOpt: Option[User], webJarsUtil: WebJarsUtil)
+
+@main("Logical Framework") {
+
+  <div class="lf content">
+    <div class="ui active tab" data-tab="theories-tab">
+      <div class="ui container" id="theories" style="padding-top:40px">
+      </div>
+    </div>
+    <div class="ui tab" data-tab="interface-tab"></div>
+  </div>
+  
+  @if(isDev) {
+    <script src='@routes.Assets.at("opetopiclf-fastopt.js")' type="text/javascript"></script>
+  } else {
+    <script src='@routes.Assets.at("opetopiclf-opt.js")' type="text/javascript"></script>
+  }
+
+}
