@@ -4,6 +4,7 @@
 
 # Home page
 GET        /                             net.opetopic.controllers.Application.index
+GET        /studio                       net.opetopic.controllers.Application.studio
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                controllers.Assets.at(path="/public", file)

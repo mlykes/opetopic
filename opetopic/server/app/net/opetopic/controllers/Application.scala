@@ -14,4 +14,8 @@ class Application @Inject()(cc: ControllerComponents)(
     Ok(views.html.index())
   }
 
+  def studio = Action {
+    Ok(views.html.studio())
+  }
+
 }

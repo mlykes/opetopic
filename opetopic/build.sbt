@@ -45,6 +45,7 @@ lazy val client = (project in file("client"))
   .settings(commonSettings)
   .settings(
     scalaJSUseMainModuleInitializer := true,
+    mainClass := Some("net.opetopic.client.Opetopic"),
     resolvers += "Sonatype snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/",
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "1.0.0",

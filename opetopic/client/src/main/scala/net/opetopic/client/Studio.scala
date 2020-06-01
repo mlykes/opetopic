@@ -12,6 +12,7 @@ import scala.concurrent.Future
 
 import scala.scalajs.js
 import scala.scalajs.js.timers._
+import scala.scalajs.js.annotation._
 import org.scalajs.jquery._
 import org.scalajs.dom
 import org.scalajs.dom.Element
@@ -28,6 +29,7 @@ import opetopic.{ui => opui, _}
 import opui._
 import opetopic.mtl._
 
+@JSExportTopLevel("Studio")
 object Studio {
 
   val editor = new TabbedCardinalEditor[SimpleMarker]()
@@ -546,7 +548,8 @@ object Studio {
       
   //   }
 
-  def main: Unit = {
+  @JSExport
+  def initialize(): Unit = {
 
     jQuery("#editor-div").append(vertSplitPane.uiElement)
 
