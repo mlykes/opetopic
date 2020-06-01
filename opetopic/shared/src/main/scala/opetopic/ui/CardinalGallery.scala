@@ -10,7 +10,7 @@ package opetopic.ui
 import opetopic._
 import opetopic.mtl._
 
-trait CardinalGallery[F <: UIFramework]
+trait CardinalGallery[+F <: UIFramework]
     extends StableGallery[F] {
 
   type PanelType <: CardinalPanel

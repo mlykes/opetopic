@@ -10,7 +10,7 @@ package opetopic.ui
 import opetopic._
 import opetopic.mtl._
 
-trait MutableCardinalGallery[F <: UIFramework]
+trait MutableCardinalGallery[+F <: UIFramework]
     extends CardinalGallery[F] with SelectableGallery {
 
   import framework._

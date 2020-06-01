@@ -10,7 +10,7 @@ package opetopic.ui
 import opetopic._
 import opetopic.mtl._
 
-abstract class ActiveStableGallery[F <: ActiveFramework](frmwk: F) 
+abstract class ActiveStableGallery[+F <: ActiveFramework](frmwk: F) 
     extends StableGallery[F](frmwk) with SelectableGallery { thisGallery => 
 
   import framework._

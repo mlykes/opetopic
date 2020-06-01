@@ -9,14 +9,13 @@ package opetopic.ui
 
 import opetopic._
 
-trait Renderable[A, -F <: UIFramework] {
-  def render(frmwk: F)(a: A) : frmwk.CellRendering
+trait Renderable[A, F <: UIFramework] {
+  def render(f: F)(a: A) : f.CellRendering
 }
 
 object Renderable {
 
   def apply[A, F <: UIFramework](implicit r: Renderable[A, F]): Renderable[A, F] = r
-
 
   implicit def unitRenderable[F <: UIFramework]: Renderable[Unit, F] =
     new Renderable[Unit, F] {

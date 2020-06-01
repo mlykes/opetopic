@@ -10,19 +10,25 @@ package opetopic.ui
 import opetopic._
 import opetopic.mtl._
 
-class MultiEditor[A, F <: ActiveFramework](val frmwk: F)(implicit rn: Renderable[A, F]) { thisMultiEditor => 
+class MultiEditor[A, F <: ActiveFramework](final val frmwk: F)(implicit val rn: Renderable[A, F]) { thisMultiEditor => 
 
-  type FT = frmwk.type
   type MultiCell[B] = LevelEditor[B]#LevelNeutralCell
+  type FT = frmwk.type
 
   import frmwk._
   import isNumeric._
 
+  implicit val aRenderable: Renderable[A, FT] =
+    new Renderable[A, FT] {
+      def render(fm: FT)(a : A): fm.CellRendering =
+        rn.render(fm)(a)
+    }
+  
   //============================================================================================
   // INNER EDITOR
   //
-  
-  val innerControlEditor = new LevelEditor[A](SCardinal()) {
+
+  val innerControlEditor: LevelEditor[A] = new LevelEditor[A](SCardinal()) {
     
     override def extrudeSelectionWith(tgtVal: LabelType, fillVal: LabelType): Option[(SCardAddr, STree[Int])] =
       super.extrudeSelectionWith(tgtVal, fillVal).map({
@@ -83,8 +89,8 @@ class MultiEditor[A, F <: ActiveFramework](val frmwk: F)(implicit rn: Renderable
   //============================================================================================
   // OUTER EDITOR
   //
-
-  val outerControlEditor = new LevelEditor[A](SCardinal()) {
+  
+  val outerControlEditor: LevelEditor[A] = new LevelEditor[A](SCardinal()) {
 
     def extrusionData: (LevelEditor[A], LevelEditor[A]) = {
 
@@ -206,6 +212,10 @@ class MultiEditor[A, F <: ActiveFramework](val frmwk: F)(implicit rn: Renderable
   //============================================================================================
   // LEVEL EDITOR IMPLEMENTATION
   //
+
+  // trait FrwkRenderable[A] {
+  //   def render(a : A): frmwk.CellRendering
+  // }
 
   object LevelEditor {
 

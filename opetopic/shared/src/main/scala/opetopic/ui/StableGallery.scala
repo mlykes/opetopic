@@ -10,7 +10,7 @@ package opetopic.ui
 import opetopic._
 import opetopic.mtl._
 
-abstract class StableGallery[F <: UIFramework](final val framework: F) 
+abstract class StableGallery[+F <: UIFramework](final val framework: F) 
     extends LayoutContext[F] { thisGallery =>
 
   import framework._

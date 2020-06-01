@@ -10,7 +10,6 @@ package net.opetopic.client
 object Opetopic {
 
   def main(args: Array[String]): Unit = {
-    println("Hello from opetopic")
   }
 
 }

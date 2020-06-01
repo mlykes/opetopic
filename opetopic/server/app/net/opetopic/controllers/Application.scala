@@ -18,4 +18,8 @@ class Application @Inject()(cc: ControllerComponents)(
     Ok(views.html.studio())
   }
 
+  def multiedit = Action {
+    Ok(views.html.multiedit())
+  }
+
 }
