@@ -158,5 +158,3 @@ lazy val opetopicCore =
 lazy val opetopicCoreJvm = opetopicCore.jvm
 lazy val opetopicCoreJs = opetopicCore.js
 
-
-

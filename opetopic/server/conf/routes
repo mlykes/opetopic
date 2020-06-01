@@ -5,6 +5,7 @@
 # Home page
 GET        /                             net.opetopic.controllers.Application.index
 
-# Prefix must match `play.assets.urlPrefix`
-GET        /assets/*file                 controllers.Assets.at(file)
+# Map static resources from the /public folder to the /assets URL path
+GET         /assets/*file                controllers.Assets.at(path="/public", file)
 GET        /versionedAssets/*file        controllers.Assets.versioned(path="/public", file: Asset)
+->          /webjars                     webjars.Routes

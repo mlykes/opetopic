@@ -1,1 +1,3 @@
 # opetopic
+
+An opetopic editor

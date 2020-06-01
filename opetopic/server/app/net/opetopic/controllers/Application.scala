@@ -1,15 +1,17 @@
 package net.opetopic.controllers
 
 import javax.inject._
-
-import net.opetopic.shared.SharedMessages
 import play.api.mvc._
 
+import org.webjars.play.WebJarsUtil
+
 @Singleton
-class Application @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
+class Application @Inject()(cc: ControllerComponents)(
+  implicit webJarsUtil: WebJarsUtil
+) extends AbstractController(cc) {
 
   def index = Action {
-    Ok(views.html.index(SharedMessages.itWorks))
+    Ok(views.html.index())
   }
 
 }
