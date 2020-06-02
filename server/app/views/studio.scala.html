@@ -1,7 +1,8 @@
 @import org.webjars.play.WebJarsUtil
+@import forms.RenderSketchForm._
 @import play.api.Play
 
-@()(implicit webJarsUtil: WebJarsUtil)
+@(renderForm: Form[RenderDesc])(implicit request: MessagesRequestHeader, webJarsUtil: WebJarsUtil)
 
 @main("Studio") {
 
@@ -19,10 +20,6 @@
 	<i class="eye icon"></i>
 	Inspect
       </a>
-      <!-- <a class="item" data-tab="multi-tab" id="multi-link"> -->
-      <!-- 	<i class="edit outline icon"></i> -->
-      <!--   MultiEdit -->
-      <!-- </a> -->
     </div>
     
     <div class="pusher">
@@ -32,6 +29,13 @@
     
   </div>
 
+  <form id="render-request-form" action="/renderSketch" method="post" target="_blank">
+    @helper.CSRF.formField
+    <input id="sketch-file" type="hidden" name="fileName" value="sketch.svg">
+    <input id="render-data" type="hidden" name="renderData" value="default">
+    <input id="sizing-mthd" type="hidden" name="sizingMethod" value="default">
+  </form>  
+  
   <script>
     Studio.initialize();
   </script>

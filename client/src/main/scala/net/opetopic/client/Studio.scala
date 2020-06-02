@@ -64,8 +64,8 @@ object Studio {
           div(cls := "right menu")(
             div(cls := "item")(
               div(cls := "ui action input")(
-                input(id := "download-input", `type` := "text", placeholder := "Filename ...", onchange := { () => () /* onDownloadSketch */ }),
-                button(cls := "ui button", onclick := { () => () /* onDownloadSketch */ })("Download")
+                input(id := "download-input", `type` := "text", placeholder := "Filename ...", onchange := { () => onDownloadSketch }),
+                button(cls := "ui button", onclick := { () => onDownloadSketch })("Download")
               )
             )
           )
@@ -532,21 +532,21 @@ object Studio {
 
   //   }
 
-  // def onDownloadSketch: Unit =
-  //   for { cmplx <- viewer.complex } {
+  def onDownloadSketch: Unit =
+    for { cmplx <- viewer.complex } {
 
-  //     import upickle.default._
-  //     import opetopic.net._
+      import upickle.default._
+      import net.opetopic.net._
 
-  //     val renderData : String = complexToJson(cmplx)
-  //     val sizingMethod : String = write(Percentage(0.05))
+      val renderData: String = write(cmplx)
+      val sizingMethod : String = write(Percentage(0.05))
 
-  //     jQuery("#sketch-file").value(jQuery("#download-input").value.asInstanceOf[String])
-  //     jQuery("#render-data").value(renderData)
-  //     jQuery("#sizing-mthd").value(sizingMethod)
-  //     jQuery("#render-request-form").submit()
+      jQuery("#sketch-file").value(jQuery("#download-input").value.asInstanceOf[String])
+      jQuery("#render-data").value(renderData)
+      jQuery("#sizing-mthd").value(sizingMethod)
+      jQuery("#render-request-form").submit()
       
-  //   }
+    }
 
   @JSExport
   def initialize(): Unit = {

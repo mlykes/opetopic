@@ -50,7 +50,9 @@ lazy val client = (project in file("client"))
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "1.0.0",
       "be.doeraene" %%% "scalajs-jquery" % "1.0.0",
+      "com.lihaoyi" %%% "upickle" % upickleVersion,
       "com.lihaoyi" %%% "scalatags" % scalatagsVersion,
+      "com.lihaoyi" %%% "fastparse" % fastparseVersion
     )
   )
   .enablePlugins(ScalaJSPlugin, ScalaJSWeb)

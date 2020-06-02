@@ -93,4 +93,9 @@ object PolarityColorSpec extends ColorSpec(
   edgeHovered = "#f19091"
 )
 
+object ColorSpec {
 
+  import upickle.default.{ReadWriter => RW, macroRW}
+  implicit val colorSpecRW: RW[ColorSpec] = macroRW
+
+}

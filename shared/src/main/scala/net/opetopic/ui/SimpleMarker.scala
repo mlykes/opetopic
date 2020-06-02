@@ -8,6 +8,7 @@
 package net.opetopic.ui
 
 import net.opetopic.core.SAddr
+import upickle.default.{ReadWriter => RW, macroRW}
 
 class SimpleMarker(
   val lbl: String,
@@ -81,6 +82,11 @@ case class EdgeDecoration(val shape: String, val color: String, val tgt: Boolean
 
 }
 
+object EdgeDecoration {
+  implicit val edRW: RW[EdgeDecoration] = macroRW
+}
+
+
 object SimpleMarker {
 
   def apply(
@@ -116,9 +122,7 @@ object SimpleMarker {
       }
     }
 
-  // implicit object SimpleMarkerPointed extends Pointed[SimpleMarker] {
-  //   val pt: SimpleMarker = new SimpleMarker("")
-  // }
+  implicit val smRW: RW[SimpleMarker] = macroRW
 
 }
 

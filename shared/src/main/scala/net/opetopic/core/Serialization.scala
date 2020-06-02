@@ -39,4 +39,6 @@ trait Serialization {
   implicit def suiteRW[A](implicit rw: RW[A]): RW[Suite[A]] =
     RW.merge(initRW(rw), extendRW(rw))
 
+  implicit val sdirRW: RW[SDir] = macroRW
+  
 }

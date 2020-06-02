@@ -3,9 +3,10 @@
 # ~~~~
 
 # Home page
-GET        /                             net.opetopic.controllers.Application.index
-GET        /studio                       net.opetopic.controllers.Application.studio
-GET        /multiedit                    net.opetopic.controllers.Application.multiedit
+GET        /                             controllers.Application.index
+GET        /studio                       controllers.Application.studio
+GET        /multiedit                    controllers.Application.multiedit
+POST	   /renderSketch                 controllers.Application.renderSketch
 
 
 # Map static resources from the /public folder to the /assets URL path
