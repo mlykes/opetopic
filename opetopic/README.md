@@ -1,3 +1,0 @@
-# opetopic
-
-An opetopic editor
