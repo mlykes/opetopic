@@ -8,6 +8,7 @@
 package net.opetopic.core
 
 import net.opetopic.mtl._
+import upickle.default.{ReadWriter => RW, macroRW}
 
 sealed trait STree[+A]
 case object SLeaf extends STree[Nothing]
@@ -547,11 +548,6 @@ object STree {
   // PICKLING
   //
 
-  // import upickle.Js
-  // import upickle.default._
-
-  // import scala.{PartialFunction => PF}
-
   // def treeWriter[A](implicit w: Writer[A]): Writer[STree[A]] = 
   //   new Writer[STree[A]] {
   //     def write0: STree[A] => Js.Value = {
@@ -574,5 +570,5 @@ object STree {
   //     }
   //   }
 
-
 }
+

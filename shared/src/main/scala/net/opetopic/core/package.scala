@@ -7,7 +7,10 @@
 
 package net.opetopic
 
-package object core extends ComplexTypes with CardinalTypes {
+package object core
+    extends ComplexTypes
+    with CardinalTypes
+    with Serialization {
 
   type SAddr = List[SDir]
   type Shell[A] = STree[STree[A]]
