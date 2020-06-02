@@ -1,0 +1,14 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET        /                             net.opetopic.controllers.Application.index
+GET        /studio                       net.opetopic.controllers.Application.studio
+GET        /multiedit                    net.opetopic.controllers.Application.multiedit
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET         /assets/*file                controllers.Assets.at(path="/public", file)
+GET        /versionedAssets/*file        controllers.Assets.versioned(path="/public", file: Asset)
+->          /webjars                     webjars.Routes

@@ -1,0 +1,41 @@
+@import org.webjars.play.WebJarsUtil
+
+@(subnav: String)(content: Html)(implicit webJarsUtil: WebJarsUtil)
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Opetopic">
+    <meta name="author" content="Eric Finster">
+
+    <title>Opetopic - @subnav</title>
+
+    <link rel='stylesheet' href='@routes.Assets.at("stylesheets/opetopic.css")'>
+
+    @webJarsUtil.locate("2.2.4/jquery.min.js").script()
+    @webJarsUtil.locate("semantic.js").script()
+    
+  </head>
+
+  <body>
+
+    @scalajs.html.scripts("client", routes.Assets.versioned(_).toString, name => getClass.getResource(s"/public/$name") != null)
+    
+    <div class="ui fixed inverted menu" id="opetopic-menubar">
+      <a class="header item" href="/">Opetopic</a>
+    </div>
+    
+    <div class="content">
+      @content
+    </div>
+    
+  </body>
+
+  <style>
+    .content { padding-top: 40px; }
+  </style>
+
+</html>
