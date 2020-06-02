@@ -18,7 +18,7 @@ import org.scalajs.dom.raw.SVGRectElement
 import org.scalajs.dom.raw.SVGPolygonElement
 import org.scalajs.dom.raw.SVGTransformable
 
-import opetopic.ui._
+import net.opetopic.ui._
 
 object JsDomFramework extends ActiveFramework {
 

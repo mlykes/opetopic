@@ -3,3 +3,5 @@ logs/
 *.agdai
 lib/
 .metals
+.bloop
+project/metals.sbt

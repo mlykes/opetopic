@@ -19,9 +19,9 @@ import ui._
 import JsDomFramework._
 import JQuerySemanticUI._
 
-import opetopic.{ui => opui, _}
-import opui._
-import mtl._
+import net.opetopic.core._
+import net.opetopic.ui._
+import net.opetopic.mtl._
 
 @JSExportTopLevel("MultiEdit")
 object MultiEdit {

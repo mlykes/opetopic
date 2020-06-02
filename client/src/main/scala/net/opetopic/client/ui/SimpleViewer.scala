@@ -12,8 +12,8 @@ import org.scalajs.jquery._
 import scalatags.JsDom.all._
 import scala.scalajs.js.Dynamic.{literal => lit}
 
-import opetopic._
-import opetopic.ui._
+import net.opetopic.core._
+import net.opetopic.ui._
 import JsDomFramework._
 import JQuerySemanticUI._
 
