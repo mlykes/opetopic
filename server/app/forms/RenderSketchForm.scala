@@ -14,14 +14,16 @@ object RenderSketchForm {
 
   val renderForm = Form(
     mapping(
-      "fileName" -> nonEmptyText, 
+      "fileName" -> nonEmptyText,
+      "renderType" -> nonEmptyText,
       "renderData" -> nonEmptyText,
       "sizingMethod" -> nonEmptyText
     )(RenderDesc.apply)(RenderDesc.unapply)
   )
 
   case class RenderDesc(
-    fileName: String, 
+    fileName: String,
+    renderType: String, 
     renderData: String,
     sizingMethod: String
   )

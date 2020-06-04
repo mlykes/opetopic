@@ -22,6 +22,7 @@ trait CardinalTypes {
   type MAddr = List[SAddr]
   type SCardNst[+A] = MTree[SNesting[A]]
   type SCardinal[+A] = Suite[SCardNst[A]]
+  type MultiCard[+A] = Free[SCardinal, A]
 
   def rootCardinalAddr(dim: Int): SCardAddr = {
     val ba: MAddr = List.fill(dim)(Nil)

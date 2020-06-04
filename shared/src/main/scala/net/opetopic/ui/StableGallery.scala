@@ -134,7 +134,13 @@ abstract class StableGallery[+F <: UIFramework](final val framework: F)
   abstract class StablePanel {
 
     def boxNesting: SNesting[BoxType]
-    def edgeNesting: SNesting[EdgeType]
+
+    def edgeData: Either[PanelType, SNesting[CellType]]
+    def edgeNesting: SNesting[CellType] = 
+      edgeData match {
+        case Left(pp) => pp.boxNesting
+        case Right(en) => en
+      }
 
     def dim: Int
 
@@ -156,6 +162,27 @@ abstract class StableGallery[+F <: UIFramework](final val framework: F)
           rightInternalMargin = halfLeafWidth
         )
       })
+
+    def refreshEdges: Unit = 
+      edgeData match {
+        case Left(pp) => {
+
+          boxNesting match {
+            case SDot(c) => c.outgoingEdge = Some(pp.boxNesting.baseValue)
+            case SBox(_, cn) => 
+              for {
+                sp <- cn.spine
+                _ <- sp.matchTraverse[EdgeType, Unit](pp.boxNesting.toTree)({
+                  case (c, e) => Some({ c.outgoingEdge = Some(e) })
+                })
+              } { }
+          }
+          
+        }
+        case Right(en) => {
+          boxNesting.map(c => c.outgoingEdge = Some(en.baseValue))
+        }
+      }
 
     //
     //  Panel Bounds Calculation

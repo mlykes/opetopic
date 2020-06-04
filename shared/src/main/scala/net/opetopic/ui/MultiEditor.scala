@@ -137,7 +137,7 @@ class MultiEditor[A, F <: ActiveFramework](final val frmwk: F)(implicit val rn: 
     ) { 
 
       override def createNeutralCell(
-        dim: Int, lopt: Option[LevelEditor[A]], isExternal: Boolean
+        dim: Int, ca: SCardAddr, lopt: Option[LevelEditor[A]], isExternal: Boolean
       ) : LevelNeutralCell = {
 
         lopt.foreach(le => {
@@ -158,6 +158,12 @@ class MultiEditor[A, F <: ActiveFramework](final val frmwk: F)(implicit val rn: 
 
     }
 
+  def multiCard: MultiCard[Option[A]] = {
+    Join(dblEditor.cardinal.map((mmc : MultiCell[LevelEditor[A]]) =>
+      Join(mmc.label.get.cardinal.traverseCardinal[Id, Free[SCardinal, Option[A]]](
+        (mcc: MultiCell[A]) => Ret(mcc.label)
+      ))))
+  }
 
   // Inner editor has customized hovering
   def createNestedEditor(card: SCardinal[Option[A]]): LevelEditor[A] =
@@ -213,10 +219,6 @@ class MultiEditor[A, F <: ActiveFramework](final val frmwk: F)(implicit val rn: 
   // LEVEL EDITOR IMPLEMENTATION
   //
 
-  // trait FrwkRenderable[A] {
-  //   def render(a : A): frmwk.CellRendering
-  // }
-
   object LevelEditor {
 
     // Bingo!  We've got our recursive instance of renderability!
@@ -254,7 +256,7 @@ class MultiEditor[A, F <: ActiveFramework](final val frmwk: F)(implicit val rn: 
     //============================================================================================
     // EDITOR DATA
     //
-
+    
     var panels : Suite[LevelPanel] = buildPanels(c)._1
 
     def cardinal: SCardinal[LevelNeutralCell] =
@@ -275,7 +277,7 @@ class MultiEditor[A, F <: ActiveFramework](final val frmwk: F)(implicit val rn: 
       new LevelPanel(dim, cn, ed)
 
     // Neutral Cell Constructor
-    def createNeutralCell(dim: Int, initLabel: LabelType, isExternal: Boolean) : NeutralCellType =
+    def createNeutralCell(dim: Int, ca: SCardAddr, initLabel: LabelType, isExternal: Boolean) : NeutralCellType =
       new LevelNeutralCell(dim, initLabel, isExternal)
 
     //============================================================================================

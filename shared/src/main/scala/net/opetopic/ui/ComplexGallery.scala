@@ -14,41 +14,7 @@ trait ComplexGallery[F <: UIFramework] { thisGallery: StableGallery[F] =>
 
   type PanelType <: ComplexPanel
 
-  trait ComplexPanel { thisPanel : PanelType => 
-
-    val edgeData: Either[PanelType, SNesting[EdgeType]]
-
-    def edgeNesting: SNesting[CellType] = 
-      edgeData match {
-        case Left(pp) => pp.boxNesting
-        case Right(en) => en
-      }
-
-    def refreshEdges: Unit = 
-      edgeData match {
-        case Left(pp) => {
-
-          boxNesting match {
-            case SDot(c) => c.outgoingEdge = Some(pp.boxNesting.baseValue)
-            case SBox(_, cn) => 
-              for {
-                sp <- cn.spine
-                _ <- sp.matchTraverse[EdgeType, Unit](pp.boxNesting.toTree)({
-                  case (c, e) => Some({ c.outgoingEdge = Some(e) })
-                })
-              } { }
-          }
-          
-        }
-        case Right(en) => {
-          boxNesting.map(c => c.outgoingEdge = Some(en.baseValue))
-        }
-      }
-
-    // Refresh upon initialization
-    refreshEdges
-
-  }
+  trait ComplexPanel { thisPanel : PanelType => refreshEdges }
 
   def createCell(lbl: LabelType, dim: Int, addr: SAddr, isExternal: Boolean): CellType
   def createPanel(bn: SNesting[CellType], en: Either[PanelType, SNesting[CellType]]): PanelType

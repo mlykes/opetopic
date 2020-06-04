@@ -72,18 +72,17 @@ abstract class StaticStableGallery[F <: UIFramework](frmwk: F)
     def element: Element = {
 
       val (extCells, intCells) =
-        boxNesting.toList.partition(_.isExternal)
+        boxNesting.toList.filter(_.isVisible).partition(_.isExternal)
 
       val edges =
         if (boxNesting.baseValue.dim > 0)
-          edgeNesting.toList
+          edgeNesting.toList.filter(_.isVisible)
         else List()
 
       group(
         intCells.map(_.boxElement) ++
           edges.map(_.edgeElement) ++
-          extCells.map(_.boxElement) : _*
-      )
+          extCells.map(_.boxElement) : _*)
 
     }
 

@@ -57,7 +57,8 @@ class SimpleStableEditor[A, F <: ActiveFramework](frmwk: F)(c: SCardinal[Option[
     new SimplePanel(dim, cn, ed)
 
   // Neutral Cell Constructor
-  def createNeutralCell(dim: Int, initLabel: LabelType, isExternal: Boolean) : NeutralCellType =
+  def createNeutralCell(dim: Int, ca: SCardAddr, initLabel: LabelType, isExternal: Boolean) : NeutralCellType =
+    // The address is ignored because the super class sets it to a default value
     new SimpleNeutralCell(dim, initLabel, isExternal)
 
   //============================================================================================

@@ -89,74 +89,6 @@ trait MutableCardinalGallery[+F <: UIFramework]
         (box, addr) => { box.cardinalAddress = addr }
       )
 
-    def refreshEdges: Unit = 
-      edgeData match {
-        case Left(pp) => {
-
-          boxNesting match {
-            case SDot(c) => c.outgoingEdge = Some(pp.boxNesting.baseValue)
-            case SBox(_, cn) => 
-              for {
-                sp <- cn.spine
-                _ <- sp.matchTraverse[EdgeType, Unit](pp.boxNesting.toTree)({
-                  case (c, e) => Some({ c.outgoingEdge = Some(e) })
-                })
-              } { }
-          }
-          
-        }
-        case Right(en) => {
-          boxNesting.map(c => c.outgoingEdge = Some(en.baseValue))
-        }
-      }
-
-    override def bounds: Bounds = {
-
-      // Here are all the leaves
-      val lvs = edgeNesting.spine(SDeriv(SLeaf)).getOrElse(SLeaf).toList
-
-      // And here are all the boxes
-      val bxs = boxNesting match {
-        case SDot(_) => Nil // Shouldn't happen
-        case SBox(_, cn) => cn.toList.map(_.baseValue).filter(_.isVisible)
-      }
-
-      val (boxMinX, boxMaxX, boxMinY, boxMaxY) =
-        bxs match {
-          case Nil => (zero,zero,zero,zero) // Error?
-          case b::bs => {
-            (bs foldLeft (b.x,b.x + b.width, b.y, b.y + b.height))({
-              case ((curMinX, curMaxX, curMinY, curMaxY), cell) => {
-                val nextMinX = isOrdered.min(curMinX, cell.x)
-                val nextMaxX = isOrdered.max(curMaxX, cell.x + cell.width)
-                val nextMinY = isOrdered.min(curMinY, cell.y)
-                val nextMaxY = isOrdered.max(curMaxY, cell.y + cell.height)
-                (nextMinX, nextMaxX, nextMinY, nextMaxY)
-              }
-            })
-          }
-        }
-
-      // Now adjust if any of the leaves exceed the previous box calculations
-      val (minX, maxX, minY) =
-        (lvs foldLeft (boxMinX, boxMaxX, boxMinY))({
-          case ((curMinX, curMaxX, curMinY), cell) => {
-            val nextMinX = isOrdered.min(curMinX, cell.edgeStartX)
-            val nextMaxX = isOrdered.max(curMaxX, cell.edgeStartX)
-            val nextMinY = isOrdered.min(curMinY, cell.edgeStartY)
-            (nextMinX, nextMaxX, nextMinY)
-          }
-        })
-
-      Bounds(
-        minX,
-        minY,
-        maxX - minX,
-        (boxMaxY - minY) + (fromInt(4) * externalPadding)
-      )
-
-    }
-    
   }
 
   //============================================================================================
@@ -164,9 +96,9 @@ trait MutableCardinalGallery[+F <: UIFramework]
   //
 
   trait MutableCardinalCell
-      extends CardinalCell with SelectableCell { thisCell : CellType with SelectionType => 
+      extends CardinalCell
+      with SelectableCell { thisCell : CellType with SelectionType =>
 
-    def canExtrude: Boolean
     var isExternal: Boolean
 
     def selectionAddress = cardinalAddress
@@ -182,12 +114,11 @@ trait MutableCardinalGallery[+F <: UIFramework]
     thisCell : CellType with NeutralCellType with SelectionType =>
 
     // Selection stuff
-    def canExtrude: Boolean = cardinalAddress.boxAddr == Nil
     def canSelect: Boolean = true
     var cardinalAddress: SCardAddr = SCardAddr()
 
     override def pathString: String = {
-      if (canExtrude) {
+      if (isExposed) {
         var ps : String = "M " ++ edgeStartX.toString ++ " " ++ edgeStartY.toString ++ " "
         ps ++= "V " ++ edgeEndY.toString
         ps
@@ -204,7 +135,6 @@ trait MutableCardinalGallery[+F <: UIFramework]
     thisCell : CellType with PolarizedCellType with SelectionType =>
 
     var cardinalAddress: SCardAddr = SCardAddr()
-    def canExtrude: Boolean = false
     def canSelect: Boolean = false
 
     // Polarized cells don't need updates on their labels
@@ -221,7 +151,9 @@ trait MutableCardinalGallery[+F <: UIFramework]
 
     val ncn : MTree[STree[SNesting[NeutralCellType]]] = 
       Traverse[MTree].map(ps.head.cardinalNesting)(
-        nst => nst.toTreeWith(_ => SDot(createNeutralCell(ps.head.dim + 1, defaultLabel, true)))
+        nst => nst.toTreeWith(_ =>
+          SDot(createNeutralCell(ps.head.dim + 1, SCardAddr(), defaultLabel, true))
+        )
       )
 
     val newPanel = createPanel(ps.head.dim + 1, MFix(ncn), Left(ps.head))
@@ -247,8 +179,8 @@ trait MutableCardinalGallery[+F <: UIFramework]
 
     val dim = addr.dim
 
-    val tgtCell = createNeutralCell(dim, tgtVal, false)
-    val fillCell = createNeutralCell(dim + 1, fillVal, true)
+    val tgtCell = createNeutralCell(dim, SCardAddr(), tgtVal, false)
+    val fillCell = createNeutralCell(dim + 1, SCardAddr(), fillVal, true)
     
     val extPanels : Suite[PanelType] =
       if (dim == panels.head.dim)
@@ -289,10 +221,10 @@ trait MutableCardinalGallery[+F <: UIFramework]
       case None => None
       case Some(root) => {
 
-        if (root.canExtrude) {
+        if (root.isExposed) {
 
-          val tgtCell = createNeutralCell(root.dim, tgtVal, false)
-          val fillCell = createNeutralCell(root.dim + 1, fillVal, true)
+          val tgtCell = createNeutralCell(root.dim, SCardAddr(), tgtVal, false)
+          val fillCell = createNeutralCell(root.dim + 1, SCardAddr(), fillVal, true)
 
           val extPanels : Suite[PanelType] =
             if (root.dim == panels.head.dim)
@@ -341,8 +273,8 @@ trait MutableCardinalGallery[+F <: UIFramework]
   def loopAtAddrWith(tgtVal: LabelType, fillVal: LabelType)(addr: SCardAddr) : Option[SCardAddr] = {
 
     val dim = addr.dim
-    val tgtCell = createNeutralCell(dim + 1, tgtVal, false)
-    val fillCell = createNeutralCell(dim + 2, fillVal, true)
+    val tgtCell = createNeutralCell(dim + 1, SCardAddr(), tgtVal, false)
+    val fillCell = createNeutralCell(dim + 2, SCardAddr(), fillVal, true)
 
     val extPanels : Suite[PanelType] =
       if (dim == panels.head.dim)
@@ -384,10 +316,10 @@ trait MutableCardinalGallery[+F <: UIFramework]
       case None => None
       case Some(root) => {
 
-        if (root.canExtrude) {
+        if (root.isExposed) {
 
-          val tgtCell = createNeutralCell(root.dim + 1, tgtVal, false)
-          val fillCell = createNeutralCell(root.dim + 2, fillVal, true)
+          val tgtCell = createNeutralCell(root.dim + 1, SCardAddr(), tgtVal, false)
+          val fillCell = createNeutralCell(root.dim + 2, SCardAddr(), fillVal, true)
 
           val extPanels : Suite[PanelType] =
             if (root.dim == panels.head.dim)
@@ -438,8 +370,8 @@ trait MutableCardinalGallery[+F <: UIFramework]
 
     val dim = addr.dim
 
-    val srcCell = createNeutralCell(dim, srcVal, true)
-    val fillCell = createNeutralCell(dim + 1, fillVal, true)
+    val srcCell = createNeutralCell(dim, SCardAddr(), srcVal, true)
+    val fillCell = createNeutralCell(dim + 1, SCardAddr(), fillVal, true)
 
     val extPanels : Suite[PanelType] =
       if (dim == panels.head.dim)
@@ -483,8 +415,8 @@ trait MutableCardinalGallery[+F <: UIFramework]
       case Some(root) => {
         if (root.isExternal) {
 
-          val srcCell = createNeutralCell(root.dim, srcVal, true)
-          val fillCell = createNeutralCell(root.dim + 1, fillVal, true)
+          val srcCell = createNeutralCell(root.dim, SCardAddr(), srcVal, true)
+          val fillCell = createNeutralCell(root.dim + 1, SCardAddr(), fillVal, true)
 
           val extPanels : Suite[PanelType] =
             if (root.dim == panels.head.dim)

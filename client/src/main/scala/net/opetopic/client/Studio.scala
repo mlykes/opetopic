@@ -542,6 +542,7 @@ object Studio {
       val sizingMethod : String = write(Percentage(0.05))
 
       jQuery("#sketch-file").value(jQuery("#download-input").value.asInstanceOf[String])
+      jQuery("#render-type").value("Complex")
       jQuery("#render-data").value(renderData)
       jQuery("#sizing-mthd").value(sizingMethod)
       jQuery("#render-request-form").submit()

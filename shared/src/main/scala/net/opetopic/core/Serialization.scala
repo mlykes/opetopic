@@ -7,6 +7,7 @@
 
 package net.opetopic.core
 
+import net.opetopic.mtl.SC
 import upickle.default.{ReadWriter => RW, macroRW}
 
 trait Serialization {
@@ -40,5 +41,21 @@ trait Serialization {
     RW.merge(initRW(rw), extendRW(rw))
 
   implicit val sdirRW: RW[SDir] = macroRW
-  
+
+  implicit def mObjRW[A](implicit rw: RW[A]): RW[MObj[A]] =
+    macroRW
+
+  implicit def mFixRW[A](implicit rw: RW[A]): RW[MFix[A]] =
+    macroRW
+
+  implicit def mTreeRW[A](implicit rw: RW[A]): RW[MTree[A]] =
+    RW.merge(mObjRW(rw), mFixRW(rw))
+
+  implicit val cardinalSC: SC[SCardinal] =
+    new SC[SCardinal] {
+      def extend[A](rw: RW[A]): RW[SCardinal[A]] = {
+        suiteRW(mTreeRW(sNestingRW(rw)))
+      }
+    }
+
 }
