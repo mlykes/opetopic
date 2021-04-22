@@ -35,6 +35,27 @@ object MultiEdit {
 
   val multiEditPane = new CardinalEditorPane(me.dblEditor)
 
+  innerControlPane.onMutate = () => {
+
+    me.dblEditor.cardinal.
+      traverseCardinal[Id, Unit](nc => {
+        nc.label.foreach(le => {
+          var lbl: Int = 0
+          Traverse[Suite].map(le.cardinal)(nst => {
+            for { n <- nst.toList.reverse } {
+              // n.label = Some(SimpleMarker(lbl.toString))
+              n.label = Some(SimpleMarker((lbl + 97).toChar.toString))
+              lbl += 1
+            }
+          })
+          le.renderAll
+        })
+      })
+
+    me.dblEditor.renderAll
+
+  }
+
   val topPane =
     new FixedBottomPane(
       multiEditPane,

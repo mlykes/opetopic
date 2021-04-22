@@ -200,26 +200,13 @@ object Studio {
 
       }
 
-      // Show the syntax ...
-      // import syntax.SyntaxExport
-      // import syntax.PrettyPrinter
+      val faceStr = SyntaxGenerator.complexToString(face)({
+        case None => "{ }"
+        case Some(m) => "{ " ++ m.toString() ++ " }"
+      })
 
-      // SyntaxExport.complexToTerm(face) match {
-      //   case Xor.Left(msg) => jQuery(syntaxPre).text(msg)
-      //   case Xor.Right(tm) => {
-
-      //     jQuery(syntaxPre).empty
-
-      //     val strItr = PrettyPrinter.prettyPrint(
-      //       SyntaxExport.toPrintTree(tm), 80, 2
-      //     )
-
-      //     for { str <- strItr } {
-      //       jQuery(syntaxPre).append(str)
-      //     }
-
-      //   }
-      // }
+      jQuery(syntaxPre).empty()
+      jQuery(syntaxPre).append(faceStr)
 
     }
 

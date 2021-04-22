@@ -24,6 +24,15 @@ class CardinalEditorPane[A](
 ) extends Component {
 
   //============================================================================================
+  // Callbacks
+  //
+
+  var onMutate: () => Unit = { () => () } 
+  // var onExtrude: () => Unit = { () => () }
+  // var onLoop: () => Unit = { () => () }
+  // var onSprout: () => Unit = { () => () } 
+
+  //============================================================================================
   // UI 
   //
 
@@ -52,9 +61,9 @@ class CardinalEditorPane[A](
 
   def handleKeyEvent(ev: JQueryEventObject): Unit = {
     ev.which match {
-      case 101 => editor.extrudeSelection
-      case 100 => editor.loopAtSelection
-      case 115 => editor.sproutAtSelection
+      case 101 => { editor.extrudeSelection ; onMutate() }
+      case 100 => { editor.loopAtSelection ; onMutate() }
+      case 115 => { editor.sproutAtSelection ; onMutate() }
       case _ => ()
     }
   }
