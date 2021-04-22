@@ -105,8 +105,8 @@ object Studio {
     PlainComponent(div(cls := "ui inverted segment",
       style := "padding: 0; margin: 0; overflow-y: auto; overflow-x: hidden;")(flagList).render), true)
 
-  val syntaxPre = pre().render
-  val syntaxTab = new Tab("syntax-tab", PlainComponent(div(cls := "ui inverted segment", style := "padding: 0; margin: 0; overflow-x: auto;")(syntaxPre).render))
+  val syntaxPre = pre(style := "user-select: all;").render
+  val syntaxTab = new Tab("syntax-tab", PlainComponent(div(cls := "ui inverted segment", style := "padding: 0; margin: 0; overflow-x: auto; user-select: text;")(syntaxPre).render))
 
   val infoPane = new TabPane(flagTab, syntaxTab)
 
