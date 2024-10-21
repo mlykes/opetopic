@@ -183,7 +183,7 @@ object Studio {
       // This prints the link flag list ....
       // val flagItr = new FlagIterator(cmplx.withFaceAddresses, Some(c.faceAddress), true, true)
       jQuery(flagList).empty()
-      // println("******* Flag List *********")
+      println("******* Flag List *********")
 
       for { f <- flagItr } {
 
@@ -193,16 +193,18 @@ object Studio {
             case TgtFacet((f , _)) => TgtFacet(f.map(_.lbl).getOrElse(""))
           })
 
-        // println(flagStr(strFlag))
+        println(flagStr(strFlag))
 
         val item = a(cls := "item", onclick := { () => onSelectFlag(f) })(flagStr(strFlag)).render
         jQuery(flagList).append(item)
 
       }
 
-      val faceStr = SyntaxGenerator.complexToString(face)({
-        case None => "{ }"
-        case Some(m) => "{ " ++ m.toString() ++ " }"
+      // Print out some syntax
+
+      val faceStr = OpetopicTTGenerator.complexToString(face)({
+        case None => ""
+        case Some(m) => m.toString()
       })
 
       jQuery(syntaxPre).empty()

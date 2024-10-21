@@ -3,6 +3,8 @@
 //
 
 import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
+import com.typesafe.sbt.packager.docker.DockerChmodType
+import com.typesafe.sbt.packager.docker.DockerPermissionStrategy
 
 val upickleVersion = "0.9.5"
 val fastparseVersion = "2.2.2"
@@ -37,8 +39,19 @@ lazy val server = (project in file("server"))
       "org.webjars" %% "webjars-play" % "2.8.0",
       guice
     ),
+    Docker / maintainer := "ericfinster@gmail.com",
+    Docker / packageName := "opetopic",
+    Docker / version := sys.env.getOrElse("BUILD_NUMBER", "0"),
+    Docker / daemonUserUid  := None,
+    Docker / daemonUser := "daemon",
+    dockerExposedPorts := Seq(9000),
+    dockerBaseImage := "amazoncorretto:17-alpine",
+    dockerRepository := sys.env.get("ecr_repo"),
+    dockerUpdateLatest := true,
+    dockerChmodType := DockerChmodType.UserGroupWriteExecute,
+    dockerPermissionStrategy := DockerPermissionStrategy.CopyChown
   )
-  .enablePlugins(PlayScala)
+  .enablePlugins(PlayScala, AshScriptPlugin)
   .dependsOn(sharedJvm)
 
 lazy val client = (project in file("client"))
