@@ -1,0 +1,32 @@
+version: "3.3"
+services:
+  opetopic-db:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_DB: opetopic
+      POSTGRES_USER: opetopic
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - opetopic-db-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  opetopic:
+    build: .
+    expose:
+      - "9000"
+    environment:
+      PLAY_SECRET: ${PLAY_SECRET}
+      DB_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      - opetopic-db
+    networks:
+      - default
+      - opetopic-proxy
+    restart: unless-stopped
+
+volumes:
+  opetopic-db-data:
+
+networks:
+  opetopic-proxy:
+    external: true

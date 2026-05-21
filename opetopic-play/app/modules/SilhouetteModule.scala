@@ -25,13 +25,15 @@ import com.mohiva.play.silhouette.persistence.daos.{ DelegableAuthInfoDAO, InMem
 import com.mohiva.play.silhouette.persistence.repositories.DelegableAuthInfoRepository
 import models.daos._
 import models.services.{ UserService, UserServiceImpl }
+import com.typesafe.config.Config
 import net.ceedubs.ficus.Ficus._
 import net.ceedubs.ficus.readers.ArbitraryTypeReader._
+import net.ceedubs.ficus.readers.ValueReader
 import net.codingwell.scalaguice.ScalaModule
 import play.api.Configuration
 import play.api.libs.openid.OpenIdClient
 import play.api.libs.ws.WSClient
-import play.api.mvc.CookieHeaderEncoding
+import play.api.mvc.{ Cookie, CookieHeaderEncoding }
 import utils.auth.{ CustomSecuredErrorHandler, CustomUnsecuredErrorHandler, DefaultEnv }
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -44,6 +46,18 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
   /**
    * Configures the module.
    */
+  // ficus cannot auto-derive a reader for Cookie.SameSite (a sealed trait), which causes
+  // ArbitraryTypeReader to fail on Option[Option[Cookie.SameSite]] fields in Silhouette settings.
+  private implicit val cookieSameSiteReader: ValueReader[Cookie.SameSite] =
+    new ValueReader[Cookie.SameSite] {
+      def read(config: Config, path: String): Cookie.SameSite =
+        config.getString(path) match {
+          case "Strict" => Cookie.SameSite.Strict
+          case "Lax"    => Cookie.SameSite.Lax
+          case other    => throw new IllegalArgumentException(s"Unknown SameSite value: $other")
+        }
+    }
+
   def configure() {
     bind[Silhouette[DefaultEnv]].to[SilhouetteProvider[DefaultEnv]]
     bind[UnsecuredErrorHandler].to[CustomUnsecuredErrorHandler]
