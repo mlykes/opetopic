@@ -1,0 +1,16 @@
+{
+  "name": "Opetopic",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "dev",
+  "workspaceFolder": "/workspace",
+  "forwardPorts": [9000, 5432],
+  "postCreateCommand": "sbt update",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "scala-lang.scala",
+        "scalameta.metals"
+      ]
+    }
+  }
+}

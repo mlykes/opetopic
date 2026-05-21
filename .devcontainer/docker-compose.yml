@@ -1,0 +1,23 @@
+version: "3.3"
+services:
+  dev:
+    build: .
+    volumes:
+      - ..:/workspace:cached
+    command: sleep infinity
+    environment:
+      DATABASE_URL: jdbc:postgresql://dev-db:5432/opetopic
+    depends_on:
+      - dev-db
+
+  dev-db:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_DB: opetopic
+      POSTGRES_USER: opetopic
+      POSTGRES_PASSWORD: devpassword
+    volumes:
+      - dev-db-data:/var/lib/postgresql/data
+
+volumes:
+  dev-db-data:
