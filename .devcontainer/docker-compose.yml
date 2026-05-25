@@ -4,9 +4,12 @@ services:
     build: .
     volumes:
       - ..:/workspace:cached
-    command: sleep infinity
+      - /home/mlykes/.claude:/home/mlykes/.claude          # Claude Code auth + settings
+      - /home/mlykes/.ssh:/home/mlykes/.ssh:ro             # SSH keys for git
     environment:
+      TERM: xterm-256color
       DATABASE_URL: jdbc:postgresql://dev-db:5432/opetopic
+    command: sleep infinity
     depends_on:
       - dev-db
 
