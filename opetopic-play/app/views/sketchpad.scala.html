@@ -93,7 +93,7 @@
 	  </div>
 	</div>
       } else {
-        <p>Please <a href="/signIn">log in</a> to save sketches.</p>
+        <p>Please <a href="@routes.SignInController.view">log in</a> to save sketches.</p>
       }
 
     </div>
@@ -151,7 +151,7 @@
     <!-- </div> -->
   </div>
 
-  <form id="render-request-form" action="/renderSketch" method="post" target="_blank">
+  <form id="render-request-form" action="@routes.StudioController.renderSketch" method="post" target="_blank">
     @helper.CSRF.formField
     <input id="render-data" type="hidden" name="renderData" value="default">
     <input id="sizing-mthd" type="hidden" name="sizingMethod" value="default">
