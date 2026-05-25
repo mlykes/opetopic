@@ -16,12 +16,12 @@ App is available at `localhost:9000` (no `/opetopic` prefix in dev — that's on
 
 ## Deploying
 
-Push to the `prod` branch → GitHub Actions SSHes into the server and runs:
-```
-git pull origin prod && docker-compose up -d --build opetopic
-```
+Push to the `prod` branch → GitHub Actions:
+1. Builds the Docker image and pushes to `ghcr.io/mlykes/opetopic:latest`
+2. SSHes into the server and runs `docker-compose pull opetopic && docker-compose up -d` from `/opt/opetopic-prod/`
 
 Production runs at `masonlykes.com/opetopic` with `play.http.context=/opetopic`.
+Production compose and secrets live in `/opt/opetopic-prod/` (not in this repo).
 
 ## Project structure
 
