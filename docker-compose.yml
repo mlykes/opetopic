@@ -11,7 +11,7 @@ services:
     restart: unless-stopped
 
   opetopic:
-    build: .
+    image: ghcr.io/mlykes/opetopic:latest
     expose:
       - "9000"
     environment:
