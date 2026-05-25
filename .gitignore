@@ -3,3 +3,7 @@ logs/
 *.agdai
 lib/
 .env
+# IDE / tooling artifacts
+.metals/
+.vscode/
+core
