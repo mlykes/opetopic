@@ -1,6 +1,15 @@
 FROM eclipse-temurin:11-jdk
 
-RUN apt-get update && apt-get install -y curl gnupg git && \
+ARG USERNAME=mlykes
+ARG USER_UID=1000
+ARG USER_GID=1000
+
+RUN apt-get update && apt-get install -y curl gnupg git zsh sudo && \
+    # Create non-root user matching host UID/GID so file permissions are consistent
+    groupadd --gid $USER_GID $USERNAME && \
+    useradd --uid $USER_UID --gid $USER_GID -m -s /bin/zsh $USERNAME && \
+    echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/$USERNAME && \
+    chmod 0440 /etc/sudoers.d/$USERNAME && \
     # Node.js (required for Scala.js compilation pipeline)
     curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs && \
@@ -10,4 +19,13 @@ RUN apt-get update && apt-get install -y curl gnupg git && \
     apt-get update && apt-get install -y sbt && \
     rm -rf /var/lib/apt/lists/*
 
+# Install Claude Code globally (available to all users)
+RUN npm install -g @anthropic-ai/claude-code
+
+# Install oh-my-zsh for the mlykes user
+USER $USERNAME
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+USER root
 WORKDIR /workspace
+RUN chown $USERNAME:$USERNAME /workspace

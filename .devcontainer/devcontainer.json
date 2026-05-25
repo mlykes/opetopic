@@ -3,6 +3,7 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "dev",
   "workspaceFolder": "/workspace",
+  "remoteUser": "mlykes",
   "forwardPorts": [9000, 5432],
   "postCreateCommand": "sbt update",
   "customizations": {
