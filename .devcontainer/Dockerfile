@@ -5,9 +5,11 @@ ARG USER_UID=1000
 ARG USER_GID=1000
 
 RUN apt-get update && apt-get install -y curl gnupg git zsh sudo && \
-    # Create non-root user matching host UID/GID so file permissions are consistent
-    groupadd --gid $USER_GID $USERNAME && \
-    useradd --uid $USER_UID --gid $USER_GID -m -s /bin/zsh $USERNAME && \
+    # Rename the existing ubuntu user/group (UID/GID 1000) to match the host user.
+    # eclipse-temurin is Ubuntu-based and ships with an 'ubuntu' user at 1000.
+    groupmod -n $USERNAME $(getent group $USER_GID | cut -d: -f1) && \
+    existing_user=$(getent passwd $USER_UID | cut -d: -f1) && \
+    usermod -l $USERNAME -d /home/$USERNAME -m -s /bin/zsh $existing_user && \
     echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/$USERNAME && \
     chmod 0440 /etc/sudoers.d/$USERNAME && \
     # Node.js (required for Scala.js compilation pipeline)
