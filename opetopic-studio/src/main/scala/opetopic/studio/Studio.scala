@@ -413,7 +413,7 @@ object Studio {
           val req = LoadSketchRequest(id)
 
           dom.ext.Ajax.post(
-            url = "/getSketch",
+            url = js.Dynamic.global.opetopicBasePath.asInstanceOf[String] + "/getSketch",
             data = write(req),
             headers = Map(
               ("X-Requested-With" -> "*"),
@@ -452,7 +452,7 @@ object Studio {
       val req = DeleteSketchRequest(entry.id)
 
       dom.ext.Ajax.post(
-        url = "/deleteSketch",
+        url = js.Dynamic.global.opetopicBasePath.asInstanceOf[String] + "/deleteSketch",
         data = write(req),
         headers = Map(
           ("X-Requested-With" -> "*"),
@@ -492,7 +492,7 @@ object Studio {
         val req = SaveSketchRequest(name, "", "", complexToJson(cmplx))
 
         dom.ext.Ajax.post(
-          url = "/saveSketch",
+          url = js.Dynamic.global.opetopicBasePath.asInstanceOf[String] + "/saveSketch",
           data = write(req),
           headers = Map(
             ("X-Requested-With" -> "*"),

@@ -1,0 +1,7 @@
+core
+.git
+.metals
+.vscode
+target
+project/target
+project/project
