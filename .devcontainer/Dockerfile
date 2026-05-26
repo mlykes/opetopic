@@ -1,17 +1,6 @@
 FROM eclipse-temurin:11-jdk
 
-ARG USERNAME=mlykes
-ARG USER_UID=1000
-ARG USER_GID=1000
-
-RUN apt-get update && apt-get install -y curl gnupg git zsh sudo && \
-    # Rename the existing ubuntu user/group (UID/GID 1000) to match the host user.
-    # eclipse-temurin is Ubuntu-based and ships with an 'ubuntu' user at 1000.
-    groupmod -n $USERNAME $(getent group $USER_GID | cut -d: -f1) && \
-    existing_user=$(getent passwd $USER_UID | cut -d: -f1) && \
-    usermod -l $USERNAME -d /home/$USERNAME -m -s /bin/zsh $existing_user && \
-    echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/$USERNAME && \
-    chmod 0440 /etc/sudoers.d/$USERNAME && \
+RUN apt-get update && apt-get install -y curl gnupg git && \
     # Node.js (required for Scala.js compilation pipeline)
     curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs && \
@@ -24,10 +13,4 @@ RUN apt-get update && apt-get install -y curl gnupg git zsh sudo && \
 # Install Claude Code globally (available to all users)
 RUN npm install -g @anthropic-ai/claude-code
 
-# Install oh-my-zsh for the mlykes user
-USER $USERNAME
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-
-USER root
 WORKDIR /workspace
-RUN chown $USERNAME:$USERNAME /workspace

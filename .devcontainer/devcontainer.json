@@ -5,7 +5,19 @@
   "workspaceFolder": "/workspace",
   "remoteUser": "mlykes",
   "forwardPorts": [9000, 5432],
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": true,
+      "username": "mlykes",
+      "uid": "1000",
+      "gid": "1000"
+    }
+  },
   "postCreateCommand": "sbt update",
+  "remoteEnv": {
+    "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}"
+  },
   "customizations": {
     "vscode": {
       "extensions": [
