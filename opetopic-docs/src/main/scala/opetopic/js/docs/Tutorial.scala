@@ -110,7 +110,7 @@ object Tutorial {
   objectViewer.initialize
   
   val objectEl = Snap("#object-svg")
-  Snap.load("/assets/svgs/object.svg", (f: Fragment) => {
+  Snap.load(Docs.assetPath("/assets/svgs/object.svg"), (f: Fragment) => {
     objectEl.append(f)
   })
 
@@ -125,7 +125,7 @@ object Tutorial {
   arrowViewer.initialize
 
   val arrowEl = Snap("#arrow-svg")
-  Snap.load("/assets/svgs/arrow.svg", (f: Fragment) => {
+  Snap.load(Docs.assetPath("/assets/svgs/arrow.svg"), (f: Fragment) => {
     arrowEl.append(f)
   })
 
@@ -140,7 +140,7 @@ object Tutorial {
   dropViewer.initialize
 
   val dropEl = Snap("#drop-svg")
-  Snap.load("/assets/svgs/drop.svg", (f: Fragment) => {
+  Snap.load(Docs.assetPath("/assets/svgs/drop.svg"), (f: Fragment) => {
     dropEl.append(f)
   })
 
@@ -155,7 +155,7 @@ object Tutorial {
   twoglobViewer.initialize
 
   val twoglobEl = Snap("#twoglob-svg")
-  Snap.load("/assets/svgs/twoglob.svg", (f: Fragment) => {
+  Snap.load(Docs.assetPath("/assets/svgs/twoglob.svg"), (f: Fragment) => {
     twoglobEl.append(f)
   })
 
@@ -170,7 +170,7 @@ object Tutorial {
   simplexViewer.initialize
 
   val simplexEl = Snap("#simplex-svg")
-  Snap.load("/assets/svgs/simplex.svg", (f: Fragment) => {
+  Snap.load(Docs.assetPath("/assets/svgs/simplex.svg"), (f: Fragment) => {
     simplexEl.append(f)
   })
 
@@ -185,7 +185,7 @@ object Tutorial {
   quadViewer.initialize
 
   val quadEl = Snap("#quad-svg")
-  Snap.load("/assets/svgs/quad.svg", (f: Fragment) => {
+  Snap.load(Docs.assetPath("/assets/svgs/quad.svg"), (f: Fragment) => {
     quadEl.append(f)
   })
 
@@ -201,7 +201,7 @@ object Tutorial {
   threecellViewer.initialize
 
   val threecellEl = Snap("#threecell-svg")
-  Snap.load("/assets/svgs/threecell.svg", (f: Fragment) => {
+  Snap.load(Docs.assetPath("/assets/svgs/threecell.svg"), (f: Fragment) => {
     threecellEl.append(f)
   })
 

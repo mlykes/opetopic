@@ -1,6 +1,6 @@
 @(svgName: String) 
 
 <div class="ui basic center aligned segment">
-  <object type="image/svg+xml" data=@{"/assets/svgs/" ++ svgName}></object>
+  <object type="image/svg+xml" data='@routes.Assets.at("svgs/" + svgName)'></object>
 </div>
 

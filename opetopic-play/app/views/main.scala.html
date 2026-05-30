@@ -17,6 +17,8 @@
 
     <link rel='stylesheet' href='@routes.Assets.at("stylesheets/opetopic.css")'>
 
+    <script>var opetopicBasePath = "@routes.ApplicationController.index.url".replace(/\/$/, "");</script>
+
     @webJarsUtil.locate("2.2.4/jquery.min.js").script()
     @webJarsUtil.locate("semantic.js").script()
     

@@ -24,6 +24,14 @@ object Docs extends JSApp {
 
   import Examples._
 
+  // The app is served under a configurable context path (e.g. /opetopic),
+  // so asset URLs must be prefixed with it.  Exposed as a global by the
+  // page template (main.scala.html).
+  val basePath: String =
+    sjs.Dynamic.global.opetopicBasePath.asInstanceOf[String]
+
+  def assetPath(p: String): String = basePath + p
+
   type DocsViewer = JsStableViewer[String]
   type DocsCell = DocsViewer#CellType
 
@@ -174,7 +182,7 @@ object Docs extends JSApp {
       val path3452end = "m 15924.014,-5672.1378 v 2700"
 
       val lextSnap = Snap("#lext-svg")
-      Snap.load("/assets/svgs/leftextension.svg", (f: Fragment) => {
+      Snap.load(assetPath("/assets/svgs/leftextension.svg"), (f: Fragment) => {
         lextSnap.append(f)
         lextSnap.selectAll(".step-one").attr(lit(opacity = 0.0))
         lextSnap.selectAll(".step-two").attr(lit(opacity = 0.0))
@@ -269,7 +277,7 @@ object Docs extends JSApp {
       val path3404start = "m 16376.674,-5719.4353 0,1562.2448"
 
       val rextSnap = Snap("#rext-svg")
-      Snap.load("/assets/svgs/rightextension.svg", (f: Fragment) => {
+      Snap.load(assetPath("/assets/svgs/rightextension.svg"), (f: Fragment) => {
         rextSnap.append(f)
         rextSnap.selectAll(".step-one").attr(lit(opacity = 0.0))
         rextSnap.selectAll(".step-two").attr(lit(opacity = 0.0))
@@ -400,7 +408,7 @@ object Docs extends JSApp {
     objectViewer.complex = Some(obj)
 
     val objectEl = Snap("#object-svg")
-    Snap.load("/assets/svgs/object.svg", (f: Fragment) => {
+    Snap.load(assetPath("/assets/svgs/object.svg"), (f: Fragment) => {
       objectEl.append(f)
     })
 
@@ -416,7 +424,7 @@ object Docs extends JSApp {
     arrowViewer.complex = Some(arrow)
 
     val arrowEl = Snap("#arrow-svg")
-    Snap.load("/assets/svgs/arrow.svg", (f: Fragment) => {
+    Snap.load(assetPath("/assets/svgs/arrow.svg"), (f: Fragment) => {
       arrowEl.append(f)
     })
 
@@ -432,7 +440,7 @@ object Docs extends JSApp {
     dropViewer.complex = Some(drop)
 
     val dropEl = Snap("#drop-svg")
-    Snap.load("/assets/svgs/drop.svg", (f: Fragment) => {
+    Snap.load(assetPath("/assets/svgs/drop.svg"), (f: Fragment) => {
       dropEl.append(f)
     })
 
@@ -448,7 +456,7 @@ object Docs extends JSApp {
     twoglobViewer.complex = Some(twoglob)
 
     val twoglobEl = Snap("#twoglob-svg")
-    Snap.load("/assets/svgs/twoglob.svg", (f: Fragment) => {
+    Snap.load(assetPath("/assets/svgs/twoglob.svg"), (f: Fragment) => {
       twoglobEl.append(f)
     })
 
@@ -464,7 +472,7 @@ object Docs extends JSApp {
     simplexViewer.complex = Some(simplex)
 
     val simplexEl = Snap("#simplex-svg")
-    Snap.load("/assets/svgs/simplex.svg", (f: Fragment) => {
+    Snap.load(assetPath("/assets/svgs/simplex.svg"), (f: Fragment) => {
       simplexEl.append(f)
     })
 
@@ -480,7 +488,7 @@ object Docs extends JSApp {
     quadViewer.complex = Some(quad)
 
     val quadEl = Snap("#quad-svg")
-    Snap.load("/assets/svgs/quad.svg", (f: Fragment) => {
+    Snap.load(assetPath("/assets/svgs/quad.svg"), (f: Fragment) => {
       quadEl.append(f)
     })
 
@@ -497,7 +505,7 @@ object Docs extends JSApp {
     threecellViewer.complex = Some(threecell)
 
     val threecellEl = Snap("#threecell-svg")
-    Snap.load("/assets/svgs/threecell.svg", (f: Fragment) => {
+    Snap.load(assetPath("/assets/svgs/threecell.svg"), (f: Fragment) => {
       threecellEl.append(f)
     })
 
