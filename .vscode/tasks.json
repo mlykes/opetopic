@@ -1,0 +1,27 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Play: start dev server",
+            "type": "shell",
+            "command": "sbt",
+            "args": [
+                "-J-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=127.0.0.1:5005",
+                "-Dplay.http.context=/opetopic",
+                "opetopicPlay/run"
+            ],
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "^\\[error\\]\\s+(.*)$",
+                    "message": 1
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "^\\[info\\]",
+                    "endsPattern": "Listening for HTTP on"
+                }
+            }
+        }
+    ]
+}

@@ -8,11 +8,22 @@ Deployed at **masonlykes.com/opetopic**.
 You are likely running inside the devcontainer (JDK 11 + SBT + Node.js).
 A local PostgreSQL instance (`dev-db`) is available at `localhost:5432`.
 
-To start the dev server:
-```bash
-sbt run
-```
-App is available at `localhost:9000` (no `/opetopic` prefix in dev — that's only added in production).
+**Starting the dev server:** Press **F5** in VS Code. This runs the "Play: Debug" launch config, which:
+1. Starts `sbt -Dplay.http.context=/opetopic -jvm-debug 5005 opetopicPlay/run` in a background terminal
+2. Waits for Play to log "Listening for HTTP on", then attaches the Java debugger on port 5005
+
+App is available at **`localhost:8890/opetopic/`** via the dev nginx (port-forwarded from server:8889).
+Play's built-in hot reload is active — save a file and the next request triggers recompile.
+
+To stop: kill the "Play: start dev server" terminal (the debugger detaches automatically).
+
+**How the dev routing works:**
+- `localhost:8890` → VS Code port-forward → server:8889 → `mlykes-nginx-dev` container
+- nginx proxies `/opetopic` → `opetopic-dev:9000` (the devcontainer's network alias on `opetopic-proxy`)
+- The prod container (`opetopic:9000`) is unaffected and continues serving `masonlykes.com/opetopic`
+
+The `-Dplay.http.context=/opetopic` flag is required so Play routes match the `/opetopic` prefix
+that nginx forwards. This mirrors how the production container is configured (see `Dockerfile` ENTRYPOINT).
 
 ## Deploying
 

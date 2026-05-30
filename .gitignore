@@ -5,5 +5,9 @@ lib/
 .env
 # IDE / tooling artifacts
 .metals/
-.vscode/
+.bloop/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
 core

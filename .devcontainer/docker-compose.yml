@@ -12,6 +12,11 @@ services:
     command: sleep infinity
     depends_on:
       - dev-db
+    networks:
+      default:
+      opetopic-proxy:
+        aliases:
+          - opetopic-dev   # nginx.dev.conf routes /opetopic → opetopic-dev:9000
 
   dev-db:
     image: postgres:14-alpine
@@ -24,3 +29,7 @@ services:
 
 volumes:
   dev-db-data:
+
+networks:
+  opetopic-proxy:
+    external: true

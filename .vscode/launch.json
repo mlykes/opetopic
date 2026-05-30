@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // Starts Play in dev mode (hot reload) with JDWP on port 5005, then attaches.
+            // Access the running app at: localhost:8890/opetopic/ (via dev nginx)
+            // To stop: kill the "Play: start dev server" terminal.
+            "type": "java",
+            "name": "Play: Debug",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": 5005,
+            "preLaunchTask": "Play: start dev server"
+        }
+    ]
+}

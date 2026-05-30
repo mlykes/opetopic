@@ -1,5 +1,11 @@
 FROM eclipse-temurin:11-jdk
 
+# eclipse-temurin ships a built-in 'ubuntu' user at UID/GID 1000. Rename it to match
+# the host user before common-utils runs, so the feature reuses UID 1000 instead of
+# falling back to 1001. Mismatched UIDs cause AccessDeniedException on mounted files.
+RUN usermod -l mlykes -d /home/mlykes -m ubuntu \
+ && groupmod -n mlykes ubuntu
+
 RUN apt-get update && apt-get install -y curl gnupg git && \
     # Node.js (required for Scala.js compilation pipeline)
     curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \

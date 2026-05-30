@@ -5,6 +5,9 @@
   "workspaceFolder": "/workspace",
   "remoteUser": "mlykes",
   "forwardPorts": [9000, 5432],
+  "portsAttributes": {
+    "5005": { "onAutoForward": "ignore" }
+  },
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": true,
@@ -22,7 +25,8 @@
     "vscode": {
       "extensions": [
         "scala-lang.scala",
-        "scalameta.metals"
+        "scalameta.metals",
+        "vscjava.vscode-java-debug"
       ]
     }
   }
